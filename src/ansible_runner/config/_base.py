@@ -252,6 +252,8 @@ class BaseConfig:
             if self.fact_cache_type == 'jsonfile':
                 self.env['ANSIBLE_CACHE_PLUGIN_CONNECTION'] = os.path.join(artifact_dir, 'fact_cache')
 
+            self.env["ANSIBLE_ARTIFACT_STORAGE_PATH"] = os.path.join(self.artifact_dir, "job_artifacts")
+
         else:
             # seed env with existing shell env
             self.env = os.environ.copy()
@@ -331,6 +333,8 @@ class BaseConfig:
             self.env['ANSIBLE_CACHE_PLUGIN'] = 'jsonfile'
             if not self.containerized:
                 self.env['ANSIBLE_CACHE_PLUGIN_CONNECTION'] = self.fact_cache
+
+        self.env['ANSIBLE_ARTIFACT_STORAGE_PATH'] = os.path.join(self.artifact_dir, "job_artifacts")
 
         # Pexpect will error with non-string envvars types, so we ensure string types
         self.env = {str(k): str(v) for k, v in self.env.items()}
